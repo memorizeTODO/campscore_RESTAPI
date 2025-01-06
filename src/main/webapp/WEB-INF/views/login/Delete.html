@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="login.css" />
+
+<div class="login-wrap">
+  <div class="login-html">
+    <div class="login-form">
+      <div class="sign-in-htm">
+        <!-- Sign in form -->
+      </div>
+      <div class="sign-up-htm">
+        <!-- Sign up form -->
+        <div class="group">
+          <label for="user" class="label">아이디</label>
+          <input id="user" type="text" class="input" />
+        </div>
+      </div>
+      <div class="delete-account-htm">
+        <div class="group">
+          <label class="label"><h2>탈퇴사유</h2></label>
+          <input
+            id="service_dissatisfaction"
+            name="delete-reason"
+            type="checkbox"
+            class="check"
+            checked
+          />
+          <label for="service_dissatisfaction"
+            ><div class="icon">서비스 불만족</div></label
+          >
+
+          <input
+            id="service_Privacy"
+            name="delete-reason"
+            type="checkbox"
+            class="check"
+            checked
+          />
+          <label for="service_Privacy"
+            ><span class="icon">개인정보 보호</span></label
+          >
+
+          <input
+            id="service_notused"
+            name="delete-reason"
+            type="checkbox"
+            class="check"
+            checked
+          />
+          <label for="service_notused"
+            ><span class="icon">서비스 미사용</span></label
+          >
+
+          <div class="group">
+            <label for="delete-comment" class="label"><h2>상세 사유</h2></label
+            ><br />
+            <textarea
+              id="delete-comment"
+              class="input"
+              rows="4"
+              maxlength="100"
+              placeholder="100자 내로 서술해주세요"
+            ></textarea>
+          </div>
+          <div class="group">
+            <label for="delete-password" class="label"><h2>비밀번호 확인<h2></h2></label
+            ><br />
+            <input
+              id="delete-password"
+              type="password"
+              class="input"
+              placeholder="비밀번호를 입력하세요"
+            />
+          </div>
+          <div class="group">
+            <input
+              type="submit"
+              class="button"
+              value="확인"
+              onclick="confirmDelete()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function confirmDelete() {
+      var deleteReason = document.querySelector(
+        'input[name="delete-reason"]:checked'
+      );
+      var deleteComment = document.getElementById("delete-comment").value;
+      var deletePassword = document.getElementById("delete-password").value;
+
+      // 1차 항목 미선택 시 알림
+      if (!deleteReason) {
+        alert("1차 항목을 선택해주세요.");
+        return;
+      }
+
+      // 비밀번호 미입력 시 알림
+      if (!deletePassword) {
+        alert("비밀번호를 입력해주세요.");
+        return;
+      }
+
+      // 확인 절차 추가 가능 (서버로 전송 등)
+      alert("회원 탈퇴가 완료되었습니다.");
+    }
+  </script>
+</div>

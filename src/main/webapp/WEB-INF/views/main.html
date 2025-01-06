@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="../js/main.js"></script>
+        
+    </head>
+    <body>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
+        
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        
+
+
+        <header 
+            class="fixed flex justify-between p-5 w-full bg-white z-50"
+        >
+            <div>
+                <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
+            </div>
+            <div date-rangepicker class="flex items-center relative">
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+
+                  </div>
+                  <input name="startDate" type="text" class="bg-gray-50 border rounded-l-lg border-gray-300 text-gray-900 text-sm
+                                                          focus:ring-blue-500 focus:border-blue-500 
+                                                            block w-full ps-10 p-2.5  
+                                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            placeholder="">
+                </div>
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  </div>
+                  <input name="endDate" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 
+                                                        focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 
+                                                        dark:placeholder-gray-400 dark:text-white dark:
+                                                        focus:ring-blue-500 dark:focus:border-blue-500" 
+                            placeholder="">
+              </div>
+              <div>
+                <input name="지역" type="text" class="bg-gray-50 border rounded-r-lg border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
+                focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 
+                dark:placeholder-gray-400 dark:text-white dark:
+                focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+              </div>
+            <div>
+                <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
+            </div>
+        </header>
+
+        <div class="pt-20 z-10">    
+            <!-- 이미지 슬라이드 / 검색 -->
+            <div>
+                <div class="swiper">
+                    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true" space-between="0"
+                    centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false ">
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                    </swiper-container>
+                </div>
+              
+
+                <div class="relative w-4/5 -translate-y-1/2 h-48 mx-auto bg-[#ffffff] border-2 border-black-100 z-50 flex justify-start py-10 ">
+                    <div date-rangepicker class="flex items-center relative w-3/5">
+                        <div class="relative pl-5">
+                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          </div>
+                          <input name="start_date" type="text" class="bg-[#E8E8E8] border rounded-l-lg border-gray-300 text-gray-900 text-md 
+                                                                  focus:ring-blue-500 focus:border-blue-500 
+                                                                    block w-full ps-10 p-8
+                                                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                    placeholder="날짜">
+                        </div>
+                        <div class="relative">
+                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          </div>
+                          <input name="end_date" type="text" class="bg-[#E8E8E8]  border border-gray-300 rounded-r-lg  text-gray-900 text-md  focus:ring-blue-500 
+                                                                focus:border-blue-500 block w-full ps-10 p-8 dark:bg-gray-700 dark:border-gray-600 
+                                                                dark:placeholder-gray-400 dark:text-white dark:
+                                                                focus:ring-blue-500 dark:focus:border-blue-500" 
+                                    placeholder="날짜">
+                      </div>
+                     </div>   
+                     <div class="flex items-center relative w-full">
+                        <div class="relative flex pl-5">   
+                                <select id="countries" name="지역" type="text" class="bg-[#E8E8E8] rounded-lg   border  border-gray-300 text-gray-900 text-md  focus:ring-blue-500 
+                                focus:border-blue-500 block w-full ps-10 p-8 dark:bg-gray-700 dark:border-gray-600 
+                                dark:placeholder-gray-400 dark:text-white dark:
+                                focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="지역">
+                                            <option selected>지역</option>
+                                            <option value="gyeonggi">경기도</option>
+                                            <option value="gangwon">강원도</option>
+                                            <option value="chungcheongnam">충청남도</option>
+                                            <option value="chungcheongbuk">충청북도</option>
+                                            <option value="jeollanam">전라남도</option>
+                                            <option value="jeollabuk">전라북도</option>
+                                            <option value="gyeongsangnam">경상남도</option>
+                                            <option value="gyeongsangbuk">경상북도</option>
+                                            <option value="jeju">제주</option>
+                                 </select>             
+                            </div>  
+                        <div class="relative pl-5 flex">  
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"></div>
+                                <select id="campingType" name="종류" type="text" class="bg-[#E8E8E8] rounded-lg  border  border-gray-300 text-gray-900 text-md  focus:ring-blue-500 
+                                focus:border-blue-500 block w-full ps-10 p-8 dark:bg-gray-700 dark:border-gray-600 
+                                dark:placeholder-gray-400 dark:text-white dark:
+                                focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="종류">
+                                            <option selected>종류</option>
+                                            <option value="camp">캠핑</option>
+                                            <option value="caravan">카라반</option>
+                                            <option value="car">차박</option>
+                                            <option value="gramping">글램핑</option>
+                                </select>              
+                                </div>
+                           </div>         
+                     </div>       
+                    
+                  </div>          
+                </div>
+            </div>
+
+        </div>
+     
+
+        <div>
+            <!-- 날씨 -->
+            <div>
+                
+            </div>
+            <!-- 추천 캠핑장 / 추천 관광지 -->
+            <div class>
+                <label for="recmdCamp" class="justify-start block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 py-5">추천 캠핑장</label>
+                <div class="grid md:grid-cols-4 gap-4 px-20 ">
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/gapyung67.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp2.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp3.webp.jpg" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp4.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                </div>
+             <div>
+                    <label for="recmdTour" class="block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 pt-40 py-5" >추천 관광지</label>
+                    <div class="grid md:grid-cols-4 gap-4 px-20">
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour1.jpg" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour2.bmp" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour3.jpg" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour4.jpg" alt="">
+                        </div>
+                    </div>     
+            </div>
+        </div>
+        
+    </body>
+</html>

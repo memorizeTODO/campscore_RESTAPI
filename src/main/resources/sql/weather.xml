@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team5.campscore.dao.WeatherDAO">
+
+	<!-- 글작성 -->
+	<insert id="insertWeather" parameterType="weather">
+		insert into weather values(
+			#{rcode},#{addr},
+			#{tp0},#{tp1},#{tp2},#{tp3},#{tp4},#{tp5},#{tp6},#{tp7},
+			#{wc0},#{wc1},#{wc2},#{wc3},#{wc4},#{wc5},#{wc6},#{wc7},
+			#{wcd0},#{wcd1},#{wcd2},#{wcd3},#{wcd4},#{wcd5},#{wcd6},#{wcd7},
+			#{rp0},#{rp1},#{rp2},#{rp3},#{rp4},#{rp5},#{rp6},#{rp7})
+	</insert>
+	
+	<select id="getWeatherList" resultType="weather">
+		select * from weather
+	</select>
+	
+	<select id="getWeather" parameterType="String" resultType="weather">
+		select * from weather where addr=#{region}
+	</select>
+	
+	<update id="updateWeather" parameterType="weather">
+		update weather 
+		set 
+			<if test="tp0 != null">
+             tp0 = #{tp0},
+        	</if>
+			<if test="tp1 != null">
+             tp1 = #{tp1},
+        	</if>
+			<if test="tp2 != null">
+             tp2 = #{tp2},
+        	</if>
+			
+             tp3 = #{tp3},
+   
+             tp4 = #{tp4},
+        	
+             tp5 = #{tp5},
+        	
+             tp6 = #{tp6},
+        	
+             tp7 = #{tp7},
+        	
+			
+			
+			<if test="wc0 != null">
+             wc0 = #{wc0},
+        	</if>
+			<if test="wc1 != null">
+             wc1 = #{wc1},
+        	</if>
+			<if test="wc2 != null">
+             wc2 = #{wc2},
+        	</if>
+			
+             wc3 = #{wc3},
+        	
+             wc4 = #{wc4},
+        	
+             wc5 = #{wc5},
+        	
+             wc6 = #{wc6},
+        	
+             wc7 = #{wc7},
+        	
+			
+			<if test="wcd0 != null">
+             wcd0 = #{wcd0},
+        	</if>
+			<if test="wcd1 != null">
+             wcd1 = #{wcd1},
+        	</if>
+			<if test="wcd2 != null">
+             wcd2 = #{wcd2},
+        	</if>
+			
+             wcd3 = #{wcd3},
+        	
+			
+             wcd4 = #{wcd4},
+        
+			
+             wcd5 = #{wcd5},
+        	
+             wcd6 = #{wcd6},
+        	
+             wcd7 = #{wcd7},
+        	
+        	
+        	<if test="rp0 != null">
+             rp0 = #{rp0},
+        	</if>
+			<if test="rp1 != null">
+             rp1 = #{rp1},
+        	</if>
+			<if test="rp2 != null">
+             rp2 = #{rp2},
+        	</if>
+             rp3 = #{rp3},
+        	
+             rp4 = #{rp4},
+        	
+             rp5 = #{rp5},
+        	
+             rp6 = #{rp6},
+        	
+             rp7 = #{rp7}
+        	
+		where rcode = #{rcode}
+		
+	</update>
+		
+</mapper>

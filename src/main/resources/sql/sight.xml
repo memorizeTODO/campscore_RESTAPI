@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team5.campscore.dao.SightDAO">
+
+	<!-- 글작성 -->
+	<insert id="insertSight" parameterType="sight">
+		insert into sight values(#{placeID},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
+	</insert>
+	
+	<select id="getSightList" resultType="sight" >
+		SELECT place_id, place_name, COALESCE(road_address_name, address_name) AS address_name , place_url, place_img, place_long, place_lat, place_category_detail 
+		FROM sight
+		WHERE COALESCE(road_address_name, address_name) LIKE concat( #{region}, '%')  
+		order by place_name asc limit #{start},8;
+	</select>
+	
+	
+	
+
+</mapper>

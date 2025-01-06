@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body class="bg-[#F5F5F5]">
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+        <header 
+            class="fixed flex justify-between p-5 w-full bg-white z-50 border-2 border-black-100"
+        >
+            <div>
+                <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
+            </div>
+        <div class="flex justify-start">   
+            <div date-rangepicker date="sysdate" class="flex items-center relative">
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+
+                  </div>
+                  <div>
+                  <input name="start" inline-datepicker datepicker-format="mm/dd/yyyy" type="text" class="bg-gray-50 border rounded-l-lg border-gray-300 text-gray-900 text-sm
+                                                          focus:ring-blue-500 focus:border-blue-500 
+                                                            block w-full ps-10 p-2.5  
+                                                        " 
+                            placeholder="">
+                        </input>
+                </div>         
+                </div>
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  </div>
+                  <input name="end" type="text"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 
+                                                        focus:border-blue-500 block w-full ps-10 p-2.5" 
+                            placeholder="">
+              </div>
+              <div>
+                <input name="지역" type="text" class="bg-gray-50 border rounded-r-lg border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
+                focus:border-blue-500 block w-full ps-10 p-2.5">
+            </div> 
+            
+              </div>
+              <div class= "flex relative items-center">   
+                <button id="headerSearchButton" type="submit" onclick="campdata()" class="bg-[#eeeeee] hover:bg-[#dddddd] 
+                                                                w-10 h-10    rounded-full
+                                                                ">
+                    <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                        </svg> 
+                </button>
+            </div>
+        </div>                                                                 
+            <div>
+                <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
+            </div>
+        </header>
+        <div class="pt-20 z-10">
+        <!--날씨-->
+            <div class="w-full h-1/4">
+                <div class="items-center font-bold text-4xl text-center my-28">  
+                    경기도
+                </div>
+            </div>
+            <div class="relative w-full">
+                   <div class="relative w-full">
+                <div class="  h-96 w-10/12 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 py-5 rounded-lg px-5 block">
+                          <div id="weather-list" class="flex flex-row justify-center block">     
+                       </div>
+                </div>
+            </div>
+            </div>
+            
+           
+
+            <div class="relative flex w-full">
+         <!--태그영역-->
+                <div class="mx-10 w-80 flex flex-col top-0">
+                    <div class="py-10 rounded-lg ">
+                        <form class="w-80">   
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                            <div class="relative">
+                                <input type="search" id="default-search" class="block w-full p-4 text-sm text-gray-900
+                                                                                 border border-gray-300 rounded-lg bg-white 
+                                                                                 focus:ring-gray-500 focus:border-gay-500" placeholder="이름" required />
+                                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 
+                                                             bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
+                                                             font-sm rounded-lg text-sm px-4 py-2">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                        
+                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">캠핑장 종류</h3>
+                        <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="caravan-checkbox" type="radio" value="caravan" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                                                                             focus:ring-blue-500 dark:focus:ring-blue-600 ">
+                                    <label for="caravan-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">카라반</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="gramping-checkbox" type="radio" value="gramping" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                                                                               focus:ring-blue-500 dark:focus:ring-blue-600 ">
+                                    <label for="gramping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">글램핑</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="autocamping-checkbox" type="radio" value="오토캠핑장" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                                                                                 focus:ring-blue-500 dark:focus:ring-blue-600 ">
+                                    <label for="autocamping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">오토캠핑장</label>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                    
+                </div>
+                
+
+        <!--검색목록-->
+            <div class="flex flex-col w-full pb-5"> 
+                <div class="flex relative flex-row-reverse w-10/12">
+                                        <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
+                                        focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                            <option value="desc" selected>내림차순</option>
+                                            <option value="asc">오름차순</option>
+                                            </select>  
+                                        <select id="order" class="py-2.5 px-0 text-sm text-gray-500   bg-[#F5F5F5]
+                                                                            focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                            <option value="score" selected>날씨점수순</option>
+                                            <option value="alp">이름순</option>
+                                        </select>
+                                        
+                    </div>
+                <div id="camp-list">
+                    
+
+                
+                </div>
+          
+                        
+                    </div>  
+                </div>
+            </div>  
+        </div>             
+       
+                
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <script>
+        async function campdata() {
+            
+            const cres = await fetch('http://localhost:80/get/campinglist?');
+            const campJson = await cres.json();
+        	
+
+            const keys = Object.keys(campJson);
+
+     
+            
+            const innerHtmlList = keys.map((key)=>{
+                const campdataList = campJson[key];
+                    const innerHTML = `
+                
+                        <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
+                        <div class="h-64 w-64 absolute rounded-lg relative">
+                            <img class="h-64 w-64 absolute rounded-lg" src=${campdataList.placeImg} >
+                            </div>
+                            <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
+                        <div class="">
+                            ${campdataList.addressName}
+                        </div>
+                        <div class="">
+                        	${campdataList.placeName}
+                        </div>
+
+                    </div>
+                </div>
+                    `;
+                    return innerHTML;
+             });
+           
+             const campdataList = document.getElementById("camp-list");
+                campdataList.innerHTML = innerHtmlList.join('');
+        }
+      	campdata();  
+       
+         
+        /*const data = [
+            {
+                weather: 'sunny',
+                temp: 10,
+                temp2:70,
+                prec:20,
+                prec2:30,
+            },
+            {
+                weather: 'rainy',
+                temp: 20,
+                temp2:60,
+                prec:80,
+                prec2:90,
+            },
+            {
+                weather: 'cloudy',
+                temp: 30,
+                temp2:50,
+                prec:40,
+                prec2:40,
+            },
+            {
+                weather: 'sunny',
+                temp: 40,
+                temp2:40,
+                prec:20,
+                prec2:30,
+            },
+            {
+                weather: 'rainy',
+                temp: 50,
+                temp2:30,
+                prec:80,
+                prec2:70,
+            },
+            {
+                weather: 'cloudy',
+                temp: 60,
+                temp2:20,
+                prec:30,
+                prec2:40,
+            },
+            {
+                weather: 'sunny',
+                temp: 70,
+                temp2:10,
+                prec:20,
+                prec2:10,
+            }
+        ];
+		let innerHTML = ''; 	
+        const weatherListTag = document.getElementById("weather-list");
+        
+		
+        
+        var dtoday = new Date();
+        
+        var month = ('0' + (dtoday.getMonth() + 1)).slice(-2);
+        var date = ('0' + dtoday.getDate()).slice(-2);
+        
+        var arrDayStr = ['일','월','화','수','목','금','토']; 
+        var tday = dtoday.getDay();	
+       
+        
+         for(let i = 0; i<7;i++){ 
+        	const weatherData = data[i];
+        	const imgSrc = getImgSrc(weatherData.weather);
+        	const temp = weatherData.temp;
+        	const temp2 = weatherData.temp2;
+        	const prec = weatherData.prec;
+        	const prec2 = weatherData.prec2;
+        	var dt = ("0" + (dtoday.getDate()+i)).slice(-2); 
+        	var td = tday + i;	 
+
+      	 if(td > 6){
+      		 
+      			td =0;
+      		}
+
+      
+        	 innerHTML += ` 
+   		
+            <div class="flex flex-row  h-full w-40 mr-10 pt-10 items-center ">
+        		<div class="flex flex-col">
+	               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="ml-2 text-xl"><span class="ml-1">${arrDayStr[td]}</span><br>${month}.${dt}</label>
+	                <div class="h-20 w-40 flex flex-row items-center mt-5 ">
+	                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
+	                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
+	                </div>
+	                <div class="flex flex-row mx-auto items-center mt-3">
+	                    <span class="text-[#45A6FF] font-md text-2xl">${temp}°</span>
+	                    <span class="text-[#959FA9] text-2xl">/</span>
+	                    <span class="text-[#F42E2E] font-bold text-2xl">${temp2}°</span>
+	                </div>
+	                <div class="flex flex-row mx-auto items-center mt-5 font-bold">
+	                    <span class="text-[#3B9DE3] mr-2">${prec}%</span>
+	                    <span class="text-[#3B9DE3]">${prec2}%</span>
+	                </div>
+                </div>
+             </div>
+        `;
+         }
+        
+        
+        weatherListTag.innerHTML = innerHTML;
+
+        function getImgSrc(weather){	
+            switch(weather){
+                case 'sunny' : 
+                    return 'images/sunny.png';
+                    break;
+                case 'rainy': 
+                    return 'images/rain.png';
+                    break;
+                case 'cloudy': 
+                    return 'images/cloudy.png';
+                    break;
+                default :
+                    return 'error';
+         	}
+       
+                
+        }*/
+        
+        </script>
+    </body>
+</html>    
