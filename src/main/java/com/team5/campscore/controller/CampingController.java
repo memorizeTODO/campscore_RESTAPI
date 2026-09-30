@@ -39,7 +39,7 @@ public class CampingController {
 	@GetMapping("/get/campinglist")
 	public ResponseEntity<SearchResponse<CampingDTO>> getCampingToView(
 	        @RequestParam(name = "page", defaultValue = "1") int page,
-	        @RequestParam(name = "place-name", required = false, defaultValue = "") String placeName,
+	        @RequestParam(name = "place-query", required = false, defaultValue = "") String placeName,
 	        @RequestParam(name = "camp-region", required = false, defaultValue = "") String region,
 	        @RequestParam(name = "sort-type", required = false, defaultValue = "place-name") String sortType,
 	        @RequestParam(name = "order", required = false, defaultValue = "asc") String order,
