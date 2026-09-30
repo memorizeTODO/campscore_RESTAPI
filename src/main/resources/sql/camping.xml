@@ -17,22 +17,62 @@
 	
 	</select>
 	
+	<sql id="campingWhereClause">
+    <where>
+        <!-- 지역 검색: 도로명 주소 또는 지번 주소 중 하나라도 포함 -->
+        <if test="region != null and region != ''">
+            (
+                c.road_address_name LIKE CONCAT('%', #{region}, '%') 
+                OR c.address_name LIKE CONCAT('%', #{region}, '%')
+            )
+        </if>
+        
+        AND SUBSTRING_INDEX(c.address_name, ' ', 1) NOT IN (
+            '서울', '대구', '대전', '부산', '울산', '광주', '세종'
+        )
+        
+        <if test="place_name != null and place_name != ''">
+            AND c.place_name LIKE CONCAT('%', #{place_name}, '%') 
+        </if>
+        
+        <if test="place_category_list != null and !place_category_list.isEmpty()">
+            AND c.place_category_detail IN
+            <foreach collection="place_category_list" item="item" separator="," 
+                     open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
+	</sql>
+	
+	<!-- 2. 목록 조회 쿼리 -->
 	<select id="getCampingList" resultType="camping">
-		SELECT c2.place_id, c2.place_name,IF(c2.road_address_name IS NOT NULL AND c2.road_address_name != '', c2.road_address_name, c2.address_name) AS address_name ,c2.place_url,c2.place_img,c2.place_long,c2.place_lat,c2.place_category_detail 
-		FROM camping as c2
-		WHERE address_name LIKE concat('%', #{region}, '%') and 
-		address_name NOT LIKE concat('서울', '%') and
-		address_name NOT LIKE concat('대구', '%') and
-		address_name NOT LIKE concat('대전', '%') and
-		address_name NOT LIKE concat('부산', '%') and
-		address_name NOT LIKE concat('울산', '%') and
-		address_name NOT LIKE concat('부산', '%') and
-		address_name NOT LIKE concat('광주', '%') and
-		address_name NOT LIKE concat('세종', '%') and
-		c2.place_name LiKE concat('%', #{place_name}, '%') 
-		and c2.place_category_detail LiKE concat('%', #{place_category_detail},'%')
-		order by <if test="order=='asc'">c2.place_name COLLATE utf8mb4_0900_ai_ci asc</if> <if test="order=='desc'">c2.place_name COLLATE utf8mb4_0900_ai_ci desc</if> limit  #{start},10
-			
+	    SELECT 
+	        c.place_id, 
+	        c.place_name,
+	        IF(c.road_address_name IS NOT NULL AND c.road_address_name != '', c.road_address_name, c.address_name) AS address_name,
+	        c.place_url,
+	        c.place_img,
+	        c.place_long,
+	        c.place_lat,
+	        c.place_category_detail
+	    FROM camping as c
+	    
+	    <include refid="campingWhereClause"/>
+	    
+	    ORDER BY 
+	        c.place_name COLLATE utf8mb4_0900_ai_ci 
+	        <if test="order == 'asc'">ASC</if> 
+	        <if test="order == 'desc'">DESC</if> 
+	        
+	    LIMIT #{start}, 10
 	</select>
-
+	
+	<!-- 3. 카운트 조회 쿼리 -->
+	<select id="getCampingListCount" resultType="long">
+	    SELECT COUNT(*)
+	    FROM camping as c
+	    
+	    <include refid="campingWhereClause"/>
+	</select>
 </mapper>

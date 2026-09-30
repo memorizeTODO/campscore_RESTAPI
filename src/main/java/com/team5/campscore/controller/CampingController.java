@@ -2,6 +2,8 @@ package com.team5.campscore.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team5.campscore.model.CampingDTO;
 import com.team5.campscore.service.CampingDAOImpl;
 import com.team5.campscore.utilities.CampingCategoryExtrator;
+import com.team5.campscore.model.SearchResponse;
 
 import com.team5.campscore.utilities.PlaceRcodeMapBuilder;
 import com.team5.campscore.utilities.URLlib;
@@ -33,279 +36,45 @@ public class CampingController {
 	@Autowired
 	CampingDAOImpl campingService;
 	
-	
-	@GetMapping(value ="get/campinglist/region")
-	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
-		int page; 
-		String placeName = ""; 
-		String region= "";
-		String sortType = "place_name"; 
-		String order = "asc";
-		if(params.get("page")==null) {
-			page=1;
-		}else{
-			try {
-				page=Integer.parseInt(params.get("page"));
-				
-			}
-			catch (NumberFormatException e) {
-				page=1;
-			}
-		}
-		if(params.get("place")!=null) {
-			placeName= params.get("place_name");
-		}
-		
-		if(params.get("region")!=null) {
-			region=params.get("region");
-		}
-		if(params.get("sort_type")!=null) {
-			switch(params.get("sort_type")) {
-				case "place_name": case "weather_score":
-					sortType = params.get("sort_type");
-			}
-			
-		}
-		
-		if(params.get("order")!=null) {
-			switch(params.get("order")) {
-				case "asc":	case "desc":
-					order=params.get("order");
-			}
-			
-		}
-		
-		
-		
-		
-		int start = (page-1)*10 + 1;
-		
-		System.out.println("region="+region);
-		
-		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<CampingDTO> campingList;
-		campingList=campingService.getCampingListByRegion(start,region,sortType,order);
-		
-	
-		for(int i=0;i<campingList.size();i++) {
-			Map<String, Object> campingMap = new HashMap<String, Object>();
-			
-			try {
-				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println(campingMap.toString());
-			
-			System.out.println(campingMap.get("placeID"));
-			
-			campingMaps.put("item"+i,campingMap);
-		}
-		
-		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
-	}
-	
-	@GetMapping(value ="get/campinglist/place_name")
-	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByPlaceName(@RequestParam Map<String,String> params){
-		int page; 
-		String placeName = ""; 
-		String region= "";
-		String sortType = "place_name"; 
-		String order = "asc";
-		if(params.get("page")==null) {
-			page=1;
-		}else{
-			try {
-				page=Integer.parseInt(params.get("page"));
-				
-			}
-			catch (NumberFormatException e) {
-				page=1;
-			}
-		}
-		if(params.get("place_name")!=null) {
-			placeName = params.get("place_name");
-		}
-		System.out.println(placeName);
-		
-		if(params.get("region")!=null) {
-			region=params.get("region");
-		}
-		if(params.get("sort_type")!=null) {
-			switch(params.get("sort_type")) {
-				case "place_name": case "weather_score":
-					sortType = params.get("sort_type");
-			}
-			
-		}
-		
-		if(params.get("order")!=null) {
-			switch(params.get("order")) {
-				case "asc":	case "desc":
-					order=params.get("order");
-			}
-			
-		}
-		
-		
-		
-		
-		int start = (page-1)*10 + 1;
-		
-		System.out.println("region="+region);
-		
-		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<CampingDTO> campingList;
-		campingList=campingService.getCampingListByPlaceName(start,region,sortType,order,placeName);
-		
-	
-		for(int i=0;i<campingList.size();i++) {
-			Map<String, Object> campingMap = new HashMap<String, Object>();
-			
-			try {
-				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println(campingMap.toString());
-			
-			System.out.println(campingMap.get("placeID"));
-			
-			campingMaps.put("item"+i,campingMap);
-		}
-		
-		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
-	}
-	
-	
-	
-	
-	
-	@GetMapping(value ="get/campinglist")
-	ResponseEntity<Map<String, Map<String, Object>>> getCampingToView(@RequestParam Map<String,String> params){
-		int page; 
-		String placeName = ""; 
-		String region= "";
-		String sortType = "place_name"; 
-		String category = "";
-		String order = "asc";
-		if(params.get("page")==null) {
-			page=1;
-		}else{
-			try {
-				page=Integer.parseInt(params.get("page"));
-				
-			}
-			catch (NumberFormatException e) {
-				page=1;
-			}
-		}
-		if(params.get("place_name")!=null) {
-			placeName = params.get("place_name");
-		}
-		if(params.get("category")!=null) {
-			category = params.get("category");
-		}
-		System.out.println(placeName);
-		
-		if(params.get("region")!=null) {
-			region=params.get("region");
-		}
-		if(params.get("sort_type")!=null) {
-			switch(params.get("sort_type")) {
-				case "place_name": case "weather_score":
-					sortType = params.get("sort_type");
-					
-			}
-		}
-		
-		
-		if(params.get("order")!=null) {
-			switch(params.get("order")) {
-				case "asc":	case "desc":
-					order=params.get("order");
-			}
-			
-		}
-		
-		
-		
-		
-		int start = (page-1)*10;
-		
-		System.out.println("region="+region+"sortType="+sortType);
-		
-		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<CampingDTO> campingList;
-		campingList=campingService.getCampingList(start,region,sortType,order,placeName,category);
-		
-	
-		for(int i=0;i<campingList.size();i++) {
-			Map<String, Object> campingMap = new HashMap<String, Object>();
-			
-			try {
-				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
-				
-					String tmp=(String)campingMap.get("addressName");
-					if(tmp.indexOf("경기")==0) {
-						campingMap.put("region", "경기" );
-					}
-					if(tmp.indexOf("강원")==0) {
-						campingMap.put("region", "강원" );
-					}
-					if(tmp.indexOf("전북")==0) {
-						campingMap.put("region", "전북" );
-					}
-					if(tmp.indexOf("전남")==0) {
-						campingMap.put("region", "전남" );
-					}
-					if(tmp.indexOf("경북")==0) {
-						campingMap.put("region", "경북" );
-					}
-					if(tmp.indexOf("경남")==0) {
-						campingMap.put("region", "경남" );
-					}
-					if(tmp.indexOf("충북")==0) {
-						campingMap.put("region", "충북" );
-					}
-					if(tmp.indexOf("충남")==0) {
-						campingMap.put("region", "충남" );
-					}
-					if(tmp.indexOf("제주")==0) {
-						campingMap.put("region", "제주" );
-					}
-				
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			System.out.println(campingMap.toString());
-			
-			System.out.println(campingMap.get("placeID"));
-			
-			campingMaps.put("item"+i,campingMap);
-		}
-		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
+	@GetMapping("/get/campinglist")
+	public ResponseEntity<SearchResponse<CampingDTO>> getCampingToView(
+	        @RequestParam(name = "page", defaultValue = "1") int page,
+	        @RequestParam(name = "place-name", required = false, defaultValue = "") String placeName,
+	        @RequestParam(name = "camp-region", required = false, defaultValue = "") String region,
+	        @RequestParam(name = "sort-type", required = false, defaultValue = "place-name") String sortType,
+	        @RequestParam(name = "order", required = false, defaultValue = "asc") String order,
+	        @RequestParam(name = "camp-type", required = false) List<String> campTypeList
+	) {
+	    // 1. sort-type 검증
+	    if (!sortType.equals("place-name") && !sortType.equals("weather-score")) {
+	        sortType = "place-name";
+	    }
+
+	    // 2. order 검증
+	    if (!order.equals("asc") && !order.equals("desc")) {
+	        order = "asc";
+	    }
+
+	    // 3. 캠핑 종류(categoryList) 가공
+	    List<String> categoryList = null;
+	    if (campTypeList != null && !campTypeList.isEmpty()) {
+	        // "ALL"이 포함되어 있거나 비어있지 않은 경우에만 리스트 유효화
+	        boolean hasAll = campTypeList.stream().anyMatch(val -> val.equals("ALL") || val.isEmpty());
+	        if (!hasAll) {
+	            categoryList = campTypeList; // 예: ["카라반", "글램핑장"] 그대로 전달됨
+	        }
+	    }
+
+	    System.out.println("placeName = " + placeName);
+	    System.out.println("region = " + region + ", sortType = " + sortType + ", order = " + order);
+	    System.out.println("categoryList = " + categoryList);
+
+	    // 4. 서비스 호출
+	    SearchResponse<CampingDTO> response = campingService.getCampingListWithPaging(
+	            page, region, sortType, order, placeName, categoryList
+	    );
+
+	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	
@@ -332,7 +101,7 @@ public class CampingController {
 		    	   Map<String,String> headers=new HashMap<String,String>();
 		    	   params.put("query", prMap.get(key)+" 캠핑장" );
 		    	   params.put("category_group_code", "AD5");
-		           headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
+		           headers.put("Authorization", "KakaoAK b95fe7ff7e17afbd3618c81bad9d439e");
 		        	
 		           params.put("page", Integer.toString(cnt) );
 		           urlCon=new URLlib(apiurl,params,headers); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
