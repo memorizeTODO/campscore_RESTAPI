@@ -75,4 +75,18 @@
 	    
 	    <include refid="campingWhereClause"/>
 	</select>
+	
+	<select id="getCampingData" resultType="camping">
+	  SELECT 
+        c.place_id, 
+        c.place_name,
+        IF(c.road_address_name IS NOT NULL AND c.road_address_name != '', c.road_address_name, c.address_name) AS address_name,
+        c.place_url,
+        c.place_img,
+        c.place_long,
+        c.place_lat,
+        c.place_category_detail
+	  FROM camping as c
+	  WHERE c.place_id = #{placeID}
+	</select>
 </mapper>

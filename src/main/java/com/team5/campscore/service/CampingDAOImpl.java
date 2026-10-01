@@ -43,6 +43,13 @@ public class CampingDAOImpl  implements CampingDAO {
     public long getCampingListCount(String region, String placeName, List<String> category) {
         return dao.getCampingListCount(region, placeName, category);
     }
+    
+    // 특정한 PlaceID의 캠핑장 정보 조회 메서드
+    @Override
+    public CampingDTO getCampingData(int placeID){
+    	return dao.getCampingData(placeID);
+    }
+    
 
     // ==========================================
     // ⭐ [핵심] 컨트롤러가 호출할, 페이징 메타데이터가 포함된 응답 생성 메서드

@@ -30,5 +30,6 @@ public interface CampingDAO {
         @Param("place_name") String placeName, 
         @Param("place_category_list") List<String> category
     );
+	CampingDTO getCampingData(int placeID);
 }
 
