@@ -28,11 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 모든 �
 
         // 2. 토큰이 존재하고 유효한지 검증
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            // 3. 토큰에서 사용자 이름(username)을 추출
-            String username = jwtTokenProvider.getUsername(token);
+            // 3. 토큰에서 사용자 이름(memberID)를 추출
+            String memberID = jwtTokenProvider.getUsername(token);
             
             // 4. DB 등에서 사용자 상세 정보를 조회
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(memberID);
 
             // 5. 스프링 시큐리티 인증 객체 생성 (사용자 정보와 권한 목록 포함)
             UsernamePasswordAuthenticationToken authentication =
