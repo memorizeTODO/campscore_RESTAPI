@@ -36,7 +36,7 @@ public class CampingController {
 	@Autowired
 	CampingDAOImpl campingService;
 	
-	@GetMapping("/get/campinglist")
+	@GetMapping("get/campinglist")
 	public ResponseEntity<SearchResponse<CampingDTO>> getCampingListToView(
 	        @RequestParam(name = "page", defaultValue = "1") int page,
 	        @RequestParam(name = "place-query", required = false, defaultValue = "") String placeName,
@@ -78,7 +78,7 @@ public class CampingController {
 	}
 	
 	
-	@RequestMapping("/get/placedata")
+	@RequestMapping("get/placedata")
 	public ResponseEntity<CampingDTO> getCampingDataToView(
 			@RequestParam(name = "place-id", required = true) int placeID) {
 				

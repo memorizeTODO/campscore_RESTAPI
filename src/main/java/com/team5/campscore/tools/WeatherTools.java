@@ -3,6 +3,7 @@ package com.team5.campscore.tools;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,7 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,29 +30,35 @@ public class WeatherTools {
 	private WeatherDAOImpl weatherService;
 	
 	
-	public Map<String,String>  getWeatherWC(String rcode, String tmfc_param) {
-    	
-    	System.out.println(rcode);
-        // 변수 설정
-    	//Map<String,Map<String,Object>> formattedDataMaps = new HashMap<String,Map<String,Object>>(); 
-    	Map<String,String> formattedDataMap = new HashMap<String,String>(); // db로 보낼 데이터맵
-    	formattedDataMap.put("rcode",rcode);
-    	
-    	String tmfc;
-    	
-    	if (tmfc_param!=null) {
-    		tmfc= tmfc_param;
-    	}else {
-    		tmfc="";
-    	}
-    	
-    	
-    	Map<String,String> params=new HashMap<String,String>();
-    	Map<String,String> headers=new HashMap<String,String>();// get방식으로 요청 보낼 파라미터 모음
-    	//
-    	
-    	String apiurl = "https://apihub.kma.go.kr/api/typ01/url/fct_afs_wl.php";
-        params.put("authKey","zZ1CFjy9RvadQhY8vTb2fw");// 본인 서비스 키 입력
+	public Map<String,String> getWeatherWC(String rcode, String tmfc_param) {
+	    
+	    System.out.println(rcode);
+	    
+	    Map<String,String> formattedDataMap = new HashMap<String,String>(); 
+	    formattedDataMap.put("rcode", rcode);
+	    
+	    String tmfc;
+	    if (tmfc_param != null) {
+	        tmfc = tmfc_param;
+	    } else {
+	        tmfc = "";
+	    }
+	    
+	    Map<String,String> params = new HashMap<String,String>();
+	    Map<String,String> headers = new HashMap<String,String>();
+	    
+	    String apiurl = "https://apihub.kma.go.kr/api/typ01/url/fct_afs_wl.php";
+	    
+	    // --- 리소스 폴더 내 텍스트 파일에서 서비스키 읽어오기 ---
+	    String authKey = "";
+	    try {
+	        ClassPathResource resource = new ClassPathResource("apiKey_WC.txt");
+	        authKey = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8).trim();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    params.put("authKey", authKey);
         
         params.put("reg", rcode );
         params.put("mode","0" );
