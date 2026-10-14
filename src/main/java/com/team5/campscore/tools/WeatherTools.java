@@ -67,31 +67,55 @@ public class WeatherTools {
         headers.put("Connection", "keep-alive");
         
        
-        URLlib urlCon = null;
         String result = null;
-        boolean isSuccess=false;
-        
-        
-        try {        
-        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-      
-        	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-        	
-        	
-        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
-        	
-            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
-            result = urlCon.getResult(); // 응답 문자열을 가져옴
+        URLlib urlCon = null;
+        boolean isSuccess = false;
+
+        for (int i = 0; i < 3; i++) {
+            urlCon = null; // 각 루프마다 안전하게 객체 초기화
             
-           
-        } catch(IOException e) {
-        	e.printStackTrace();
-        } finally {
-            urlCon.disconnect();
-            if(isSuccess==false) {
-        		return null;
-        	}
+            try {        
+                urlCon = new URLlib(apiurl, params); // api 주소, 파라미터(get) 헤더 값
+                urlCon.setRequestMethod("GET"); // get방식으로 요청 세팅
+                
+                isSuccess = urlCon.getNetworkConnection(); // 요청 실행
+                
+                // 연결 실패 또는 504 등 응답 지연 시
+                if (!isSuccess) {
+                    System.err.println("API 연결 실패 또는 기상청 서버 응답 지연 (504 등) - 시도 (" + (i + 1) + "/3)");
+                    Thread.sleep(1000); // 1초 대기 후 재시도
+                    continue; 
+                }
+                
+                urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
+                result = urlCon.getResult(); // 응답 문자열을 가져옴
+                
+                // 응답 결과가 정상적으로 존재하면 루프 탈출
+                if (result != null && !result.isEmpty()) {
+                    break; 
+                }
+                
+            } catch (Exception e) {
+                // IOException 및 NullPointerException 등 모든 예외를 잡아서 재시도 유도
+                System.err.println("API 호출 중 예외 발생 (시도 " + (i + 1) + "/3): " + e.getMessage());
+                
+                if (i == 2) { // 3번 다 실패한 경우에만 스택 트레이스 출력
+                    e.printStackTrace();
+                }
+                
+                try {
+                    Thread.sleep(1000); // 예외 발생 시에도 1초 대기 후 재시도
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            } finally {
+                // urlCon이 생성되었을 때만 안전하게 자원 해제
+                if (urlCon != null) {
+                    try {
+                        urlCon.disconnect();
+                    } catch (Exception ignored) {}
+                }
+            }
         }
         
           
@@ -197,7 +221,16 @@ public class WeatherTools {
     	//
     	
     	String apiurl = "https://apihub.kma.go.kr/api/typ01/url/fct_afs_wc.php";
-        params.put("authKey","zZ1CFjy9RvadQhY8vTb2fw");// 본인 서비스 키 입력
+    	
+    	   // --- 리소스 폴더 내 텍스트 파일에서 서비스키 읽어오기 ---
+	    String authKey = "";
+	    try {
+	        ClassPathResource resource = new ClassPathResource("apiKey_WC.txt");
+	        authKey = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8).trim();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+        params.put("authKey",authKey);// 본인 서비스 키 입력
        
         params.put("reg", rcode);
         params.put("mode","0" );
@@ -209,29 +242,51 @@ public class WeatherTools {
         URLlib urlCon = null;
         String result = null;
         boolean isSuccess=false;
-        for (int i =0; i<3;i++) {
-	        try {        
-	        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-	      
-	        	//urlCon.setRequestContentType("json");;// 응답받고자하는 콘텐츠 타입 지정
-	        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-	        	
-	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
-	        	
-	        	
-	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
-	            result = urlCon.getResult(); // 응답 문자열을 가져옴
-	           
-	            if(isSuccess==true) {
-	        		break;
-	        	}
-	        }  catch(IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            urlCon.disconnect();
-	        }
+        for (int i = 0; i < 3; i++) {
+            urlCon = null; // 각 루프마다 안전하게 객체 초기화
+            try {        
+                urlCon = new URLlib(apiurl, params); // api 주소, 파라미터(get)
+                urlCon.setRequestMethod("GET"); // get방식으로 요청 세팅
+                
+                isSuccess = urlCon.getNetworkConnection(); // 요청 실행
+                
+                if (!isSuccess) {
+                    System.err.println("API 연결 실패, 재시도 대기중... (시도: " + (i + 1) + "/3)");
+                    Thread.sleep(1000); // 1초 대기 후 다음 반복으로
+                    continue;
+                }
+                
+                urlCon.readStreamToString("EUC-KR"); // 응답 문자열로 저장
+                result = urlCon.getResult(); // 응답 문자열 가져오기
+                
+                // 결과가 비어있거나 문제가 있다면 성공으로 인정하지 않음
+                if (result != null && !result.isEmpty()) {
+                    System.out.println("날씨 API 호출 성공!");
+                    break; // 성공 시 루프 탈출
+                }
+                
+            } catch (Exception e) { 
+                // IOException뿐만 아니라 NullPointerException 등 모든 예외를 잡아서 재시도 유도
+                System.err.println("API 호출 중 예외 발생 (시도 " + (i + 1) + "/3): " + e.getMessage());
+                
+                if (i == 2) { // 3번 다 실패한 경우
+                    e.printStackTrace();
+                }
+                
+                try {
+                    Thread.sleep(1000); // 재시도 전 1초 대기 (서버 부하 방지)
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            } finally {
+                // urlCon이 생성되었을 때만 안전하게 자원 해제
+                if (urlCon != null) {
+                    try {
+                        urlCon.disconnect();
+                    } catch (Exception ignored) {}
+                }
+            }
         }
-
           
         String filePath = "c:\\Temp\\weatherTP.json";
         
@@ -241,9 +296,9 @@ public class WeatherTools {
 		 		fileWriter.write(result);
 		  
 		 		fileWriter.close(); 
-		  }catch (IOException e) { 
+		 }catch (IOException e) { 
 		  		e.printStackTrace(); 
-		  }
+		 }
 		 
 			WeatherDataExtractor w= new WeatherDataExtractor();
         	Map<String,String>dataMap= new HashMap<String,String>();
