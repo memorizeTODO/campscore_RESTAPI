@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.team5.campscore.dao.MemberDAO">
+
+    <insert id="insertMember" parameterType="com.team5.campscore.model.MemberSignupRequestDTO">
+        INSERT INTO member (
+            member_id,
+            member_passwd,
+            member_nickname,
+            member_name,
+            member_email,
+            member_type,
+            member_phone1,
+            member_phone2,
+            member_phone3,
+            member_address1,
+            member_address2,
+            birth_date,
+            preferred_region,
+            business_number,
+            created_at
+        ) VALUES (
+            #{memberID},
+            #{memberPasswd},
+            #{memberNickname},
+            #{memberName},
+            #{memberEmail},
+            #{memberType},
+            #{memberPhone1},
+            #{memberPhone2},
+            #{memberPhone3},
+            #{memberAddress1},
+            #{memberAddress2},
+            #{birthDate},
+            #{preferredRegion},
+            #{businessNumber},
+            NOW()
+        )
+    </insert>
+    
+    <!-- 아이디 중복 검사 -->
+    <select id="checkIdDuplicate" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_id = #{memberID}
+    </select>
+
+    <!-- 닉네임 중복 검사 -->
+    <select id="checkNicknameDuplicate" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_nickname = #{memberNickname}
+    </select>
+
+    <!-- 사업자 번호 중복 검사 -->
+    <select id="checkBizNumDuplicate" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM member WHERE business_number = #{businessNumber}
+    </select>
+
+</mapper>
