@@ -1,5 +1,8 @@
 package com.team5.campscore.model;
 
+import lombok.Data;
+
+@Data
 public class MemberSignupRequestDTO {
 	private String memberID;    // 이메일
     private String memberPasswd; // 비밀번호
@@ -14,4 +17,5 @@ public class MemberSignupRequestDTO {
     private String memberAddress2;       // 상세 주소 2
     private String birthDate;      // 생년월일 6자리
     private String preferredRegion;// 선호지역
+    private String businessNumber;  // 사업자 등록번호 (업주 회원 전용)
 }
