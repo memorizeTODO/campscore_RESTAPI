@@ -16,14 +16,14 @@ import com.team5.campscore.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/login/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 	public class AuthenticationController {
 	
 	    private final AuthenticationManager authenticationManager;
 	    private final JwtTokenProvider jwtTokenProvider;
 	
-	    @PostMapping("/login")
+	    @PostMapping("login")
 	    public ResponseEntity<?> login(@RequestBody LoginRequestDTO requestDTO) {
 	        // 1. 사용자가 보낸 아이디와 패스워드를 기반으로 인증 토큰 객체를 만들어 AuthenticationManager에 전달
 	        Authentication authentication = authenticationManager.authenticate(
