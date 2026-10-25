@@ -9,5 +9,7 @@ public interface MemberDAO {
 
 	boolean checkNicknameDuplicate(String memberNickname);
 
+	public boolean checkEmailDuplicate(String memberEmail);
+	
 	boolean checkBizNumDuplicate(String businessNumber);
 }

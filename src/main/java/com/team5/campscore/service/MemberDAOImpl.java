@@ -32,6 +32,11 @@ public class MemberDAOImpl implements MemberDAO {
         return count > 0;
     }
 
+    public boolean checkEmailDuplicate(String memberEmail) {
+        int count = sqlSession.selectOne("com.team5.campscore.dao.MemberDAO.checkEmailDuplicate", memberEmail);
+        return count > 0;
+    }
+    
     // 사업자 번호 중복 체크
     @Override
     public boolean checkBizNumDuplicate(String businessNumber) {

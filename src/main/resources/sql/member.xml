@@ -4,7 +4,7 @@
 
 <mapper namespace="com.team5.campscore.dao.MemberDAO">
 
-    <insert id="insertMember" parameterType="com.team5.campscore.model.MemberSignupRequestDTO">
+   <insert id="insertMember" parameterType="com.team5.campscore.model.MemberSignupRequestDTO">
         INSERT INTO member (
             member_id,
             member_passwd,
@@ -19,8 +19,8 @@
             member_address2,
             birth_date,
             preferred_region,
-            business_number,
-            created_at
+            business_number
+            <!-- regist_date는 DB의 CURRENT_TIMESTAMP 기본값에 맡기므로 여기서 아예 제외합니다 -->
         ) VALUES (
             #{memberID},
             #{memberPasswd},
@@ -35,8 +35,7 @@
             #{memberAddress2},
             #{birthDate},
             #{preferredRegion},
-            #{businessNumber},
-            NOW()
+            #{businessNumber}
         )
     </insert>
     
@@ -49,6 +48,10 @@
     <select id="checkNicknameDuplicate" parameterType="string" resultType="int">
         SELECT COUNT(*) FROM member WHERE member_nickname = #{memberNickname}
     </select>
+    
+    <select id="checkEmailDuplicate" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM member WHERE member_email = #{memberEmail}
+	</select>
 
     <!-- 사업자 번호 중복 검사 -->
     <select id="checkBizNumDuplicate" parameterType="string" resultType="int">

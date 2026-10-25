@@ -33,10 +33,16 @@ public class MemberController {
         }
     }
     
-    // 1. 아이디(이메일) 중복 확인
+    // 1. 아이디 중복 확인
     @PostMapping("chk-id-dup")
     public ResponseEntity<Boolean> checkIdDup(@RequestBody MemberSignupRequestDTO memberDTO) {
         boolean isDuplicate = memberService.checkIdDuplicate(memberDTO.getMemberID());
+        return ResponseEntity.ok(isDuplicate);
+    }
+    
+    @PostMapping("chk-email-dup")
+    public ResponseEntity<Boolean> checkEmailDup(@RequestBody MemberSignupRequestDTO memberDTO) {
+        boolean isDuplicate = memberService.checkEmailDuplicate(memberDTO.getMemberEmail());
         return ResponseEntity.ok(isDuplicate);
     }
 
