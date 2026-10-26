@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository; // 또는 @Service
 
 import com.team5.campscore.dao.MemberDAO;
-import com.team5.campscore.model.MemberSignupRequestDTO;
+import com.team5.campscore.model.MemberDTO;
 
 @Repository // 또는 기존 스타일처럼 @Service를 쓰셔도 스프링 빈으로 등록됩니다.
 public class MemberDAOImpl implements MemberDAO {
@@ -14,7 +14,7 @@ public class MemberDAOImpl implements MemberDAO {
     private SqlSessionTemplate sqlSession; // 혹은 주입받고자 하는 MyBatis 객체나 다른 매퍼
 
     @Override
-    public void insertMember(MemberSignupRequestDTO memberDTO) {
+    public void insertMember(MemberDTO memberDTO) {
         sqlSession.insert("com.team5.campscore.dao.MemberDAO.insertMember", memberDTO);
     }
     
@@ -43,4 +43,9 @@ public class MemberDAOImpl implements MemberDAO {
         int count = sqlSession.selectOne("com.team5.campscore.dao.MemberDAO.checkBizNumDuplicate", businessNumber);
         return count > 0;
     }
+
+	public MemberDTO findByMemberID(String memberID) {
+		return sqlSession.selectOne("com.team5.campscore.dao.MemberDAO.findByMemberID", memberID);
+		//조회 실패시 null 
+	}
 }

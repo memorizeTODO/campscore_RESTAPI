@@ -1,9 +1,11 @@
 package com.team5.campscore.dao;
 
-import com.team5.campscore.model.MemberSignupRequestDTO;
+import org.apache.ibatis.annotations.Param;
+
+import com.team5.campscore.model.MemberDTO;
 
 public interface MemberDAO {
-    void insertMember(MemberSignupRequestDTO memberDTO);
+    void insertMember(MemberDTO memberDTO);
 
 	boolean checkIdDuplicate(String memberID);
 
@@ -12,4 +14,6 @@ public interface MemberDAO {
 	public boolean checkEmailDuplicate(String memberEmail);
 	
 	boolean checkBizNumDuplicate(String businessNumber);
+	
+	MemberDTO findByMemberID(@Param("memberID") String memberID);
 }

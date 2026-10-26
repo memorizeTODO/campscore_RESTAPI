@@ -4,7 +4,7 @@
 
 <mapper namespace="com.team5.campscore.dao.MemberDAO">
 
-   <insert id="insertMember" parameterType="com.team5.campscore.model.MemberSignupRequestDTO">
+   <insert id="insertMember" parameterType="com.team5.campscore.model.MemberDTO">
         INSERT INTO member (
             member_id,
             member_passwd,
@@ -56,6 +56,16 @@
     <!-- 사업자 번호 중복 검사 -->
     <select id="checkBizNumDuplicate" parameterType="string" resultType="int">
         SELECT COUNT(*) FROM member WHERE business_number = #{businessNumber}
+    </select>
+    
+    <select id="findByMemberID" parameterType="string" resultType="com.team5.campscore.model.MemberDTO">
+        SELECT 
+            member_id,
+            member_passwd,
+            member_email,
+            member_type
+        FROM member
+        WHERE member_id = #{memberID}
     </select>
 
 </mapper>

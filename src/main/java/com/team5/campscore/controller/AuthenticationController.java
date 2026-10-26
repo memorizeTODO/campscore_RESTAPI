@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 	        );
 	
 	        // 2. 인증에 성공했다면, 해당 유저의 ID를 기반으로 JWT 토큰을 발급
-	        String token = jwtTokenProvider.createToken(requestDTO.getMemberID());
+	        String token = jwtTokenProvider.createToken(authentication.getName());
 	
 	        // 3. 발급받은 토큰을 응답 객체(DTO)에 담아 클라이언트에 반환
 	        return ResponseEntity.ok(new JwtResponseDTO(token, "Bearer"));

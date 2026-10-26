@@ -3,7 +3,7 @@ package com.team5.campscore.model;
 import lombok.Data;
 
 @Data
-public class MemberSignupRequestDTO {
+public class MemberDTO {
 	private String memberID;    // 이메일
     private String memberPasswd; // 비밀번호
     private String memberNickname; // 닉네임
