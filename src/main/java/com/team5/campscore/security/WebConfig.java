@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
             )
             .authorizeHttpRequests(auth -> auth
                 // 👇 회원가입, 아이디 중복체크 등이 포함된 /member/ 경로 일부를 permitAll()에 추가
-                .requestMatchers("/auth/login", "/member/chk-biznum-dup","/member/chk-nname-dup","/member/chk-id-dup","/member/signup","/member/chk-email-dup", "/get/weather", "/error").permitAll() 
+                .requestMatchers("get/campinglist", "get/placedata", "/auth/login", "/member/chk-biznum-dup","/member/chk-nname-dup","/member/chk-id-dup","/member/signup","/member/chk-email-dup", "/get/weather", "/error").permitAll() 
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
