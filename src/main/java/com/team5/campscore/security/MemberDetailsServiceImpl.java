@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service // 스프링이 빈으로 인식할 수 있도록 @Service를 붙여줍니다.
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class MemberDetailsServiceImpl implements UserDetailsService {
 
 	private final MemberDAOImpl memberDAO;
 
@@ -53,10 +53,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
 
         // 3. UserDetails 객체 반환
-        return new User(
-                member.getMemberID(),
-                member.getMemberPasswd(),
-                authorities
-        );
+        return new MemberDetails(member, authorities);
     }
 }

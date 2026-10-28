@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team5.campscore.model.JwtResponseDTO;
 import com.team5.campscore.model.LoginRequestDTO;
 import com.team5.campscore.security.JwtTokenProvider;
+import com.team5.campscore.security.MemberDetails;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,11 +30,22 @@ import lombok.RequiredArgsConstructor;
 	        Authentication authentication = authenticationManager.authenticate(
 	                new UsernamePasswordAuthenticationToken(requestDTO.getMemberID(), requestDTO.getMemberPasswd())
 	        );
+	        
+	        MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
 	
 	        // 2. 인증에 성공했다면, 해당 유저의 ID를 기반으로 JWT 토큰을 발급
 	        String token = jwtTokenProvider.createToken(authentication.getName());
 	
 	        // 3. 발급받은 토큰을 응답 객체(DTO)에 담아 클라이언트에 반환
-	        return ResponseEntity.ok(new JwtResponseDTO(token, "Bearer"));
+	     // [수정] memberType(권한/유형)을 포함하여 응답 DTO 생성
+	        JwtResponseDTO responseDTO = new JwtResponseDTO(
+	                token, 
+	                "Bearer", 
+	                memberDetails.getUsername(),      
+	                memberDetails.getMemberNickname(), 
+	                memberDetails.getMemberType()       // <-- 회원 유형 추가 전달!
+	        );
+
+	        return ResponseEntity.ok(responseDTO);
     }
 }

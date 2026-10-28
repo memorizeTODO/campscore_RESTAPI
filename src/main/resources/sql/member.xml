@@ -60,10 +60,11 @@
     
     <select id="findByMemberID" parameterType="string" resultType="com.team5.campscore.model.MemberDTO">
         SELECT 
-            member_id,
-            member_passwd,
-            member_email,
-            member_type
+            member_id AS memberID,
+            member_passwd AS memberPasswd,
+            member_nickname AS memberNickname,
+            member_email AS memberEmail,
+            member_type AS memberType
         FROM member
         WHERE member_id = #{memberID}
     </select>
