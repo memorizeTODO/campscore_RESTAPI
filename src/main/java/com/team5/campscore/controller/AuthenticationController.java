@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.team5.campscore.model.JwtResponseDTO;
+import com.team5.campscore.model.LoginResponseDTO;
 import com.team5.campscore.model.LoginRequestDTO;
 import com.team5.campscore.security.JwtTokenProvider;
 import com.team5.campscore.security.MemberDetails;
@@ -38,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 	
 	        // 3. 발급받은 토큰을 응답 객체(DTO)에 담아 클라이언트에 반환
 	     // [수정] memberType(권한/유형)을 포함하여 응답 DTO 생성
-	        JwtResponseDTO responseDTO = new JwtResponseDTO(
+	        LoginResponseDTO responseDTO = new LoginResponseDTO(
 	                token, 
 	                "Bearer", 
 	                memberDetails.getUsername(),      

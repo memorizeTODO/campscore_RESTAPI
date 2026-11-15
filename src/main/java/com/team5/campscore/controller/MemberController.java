@@ -3,16 +3,26 @@ package com.team5.campscore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team5.campscore.model.VerificationTokenResponseDTO;
 import com.team5.campscore.model.MemberDTO;
+import com.team5.campscore.model.PasswordCheckRequestDTO;
 import com.team5.campscore.model.ValidationResponseDTO;
+import com.team5.campscore.model.updateMemberInfoRequestDTO;
+import com.team5.campscore.security.JwtTokenProvider;
 import com.team5.campscore.service.MemberDAOImpl;
 import com.team5.campscore.utilities.MemberValidationUtils;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/member")
@@ -22,6 +32,9 @@ public class MemberController {
     private MemberDAOImpl memberService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+	
 
     @PostMapping("signup")
     public ResponseEntity<String> signupMember(@RequestBody MemberDTO memberDTO) {
@@ -111,5 +124,44 @@ public class MemberController {
         }
 
         return ResponseEntity.ok(new ValidationResponseDTO(true, "사용 가능한 사업자 번호입니다."));
+    }
+    
+    @PostMapping("/auth/verification")
+    public ResponseEntity<VerificationTokenResponseDTO> verifyPassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody PasswordCheckRequestDTO requestDTO) {
+        
+     // 1. DAO로 회원 정보 조회
+        MemberDTO member = memberService.findByMemberID(userDetails.getUsername());
+        if (member == null) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+
+        // 2. 비밀번호 일치 여부 확인
+        if (!passwordEncoder.matches(requestDTO.getPasswd(), member.getMemberPasswd())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 3. 5분짜리 파생 Edit Token 발급
+        String verificationToken = jwtTokenProvider.generateDerivedVerificationToken(userDetails.getUsername());
+        
+        return ResponseEntity.ok(new VerificationTokenResponseDTO(verificationToken, "비밀번호 인증이 완료되었습니다."));
+    }
+
+    // 2단계: 파생 Edit Token 헤더 검증을 거친 후 실제 정보 수정 수행
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateMember(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestHeader("X-Verification-Token") String verificationToken,
+            @Valid @RequestBody updateMemberInfoRequestDTO UpdateRequestDTO) {
+        
+        // 파생 토큰 유효성 및 권한 범위 검증 (우회 및 변조 방지)
+        if (verificationToken == null || !jwtTokenProvider.validateVerificationToken(verificationToken, userDetails.getUsername())) {
+            throw new SecurityException("유효하지 않거나 만료된 정보 수정 권한입니다. 다시 인증해주세요.");
+        }
+
+        // memberService.updateMember(userDetails.getUsername(), editRequestDto);
+        
+        return ResponseEntity.ok().build();
     }
 }

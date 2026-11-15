@@ -1,9 +1,11 @@
 package com.team5.campscore.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.team5.campscore.model.MemberDTO;
 
+@Mapper
 public interface MemberDAO {
     void insertMember(MemberDTO memberDTO);
 

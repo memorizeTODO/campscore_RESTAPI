@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor // 기본 생성자 (JSON 직렬화/역직렬화용)
 @AllArgsConstructor // 모든 필드를 받는 생성자 (컨트롤러에서 객체 생성 시 편리)
-public class JwtResponseDTO {
+public class LoginResponseDTO {
     private String accessToken;          
     private String tokenType = "Bearer"; 
     private String memberID;             

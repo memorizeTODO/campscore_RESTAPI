@@ -68,4 +68,38 @@ public class JwtTokenProvider {
             return false; // 만료되었거나 변조된, 혹은 잘못된 형식의 토큰인 경우
         }
     }
+    
+    // 메인 액세스 토큰(또는 인증된 사용자 정보)을 기반으로 파생된 단기 verification토큰 발급 (유효기간 5분)
+    public String generateDerivedVerificationToken(String username) {
+        Date now = new Date();
+        long editTokenValidityInMilliseconds = 5 * 60 * 1000L; // 5분
+        Date validity = new Date(now.getTime() + editTokenValidityInMilliseconds);
+
+        return Jwts.builder()
+                .subject(username) // setSubject -> subject 로 변경
+                .claim("type", "EDIT_TOKEN")
+                .issuedAt(now)     // setIssuedAt -> issuedAt 로 변경
+                .expiration(validity) // setExpiration -> expiration 로 변경
+                .signWith(key)     // 알고리즘 매개변수가 빠지고 key 객체만 전달
+                .compact();
+    }
+
+    // 2. 파생된 단기 수정 토큰 검증 및 파싱 
+    public boolean validateVerificationToken(String token, String username) {
+        try {
+            // parserBuilder() 대신 parser() 사용 후 키 지정
+            Claims claims = Jwts.parser()
+                    .verifyWith(key) // setSigningKey -> verifyWith 로 변경
+                    .build()
+                    .parseSignedClaims(token) // parseClaimsJws -> parseSignedClaims 로 변경
+                    .getPayload(); // getBody -> getPayload 로 변경
+
+            String tokenType = claims.get("type", String.class);
+            String tokenUsername = claims.getSubject();
+
+            return "EDIT_TOKEN".equals(tokenType) && tokenUsername.equals(username);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

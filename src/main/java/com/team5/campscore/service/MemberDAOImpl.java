@@ -2,20 +2,23 @@ package com.team5.campscore.service;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository; // 또는 @Service
-
+import org.springframework.stereotype.Repository;
 import com.team5.campscore.dao.MemberDAO;
 import com.team5.campscore.model.MemberDTO;
+
 
 @Repository // 또는 기존 스타일처럼 @Service를 쓰셔도 스프링 빈으로 등록됩니다.
 public class MemberDAOImpl implements MemberDAO {
 
     @Autowired
     private SqlSessionTemplate sqlSession; // 혹은 주입받고자 하는 MyBatis 객체나 다른 매퍼
+    @Autowired
+    private MemberDAO dao;// 매퍼
 
+    
     @Override
     public void insertMember(MemberDTO memberDTO) {
-        sqlSession.insert("com.team5.campscore.dao.MemberDAO.insertMember", memberDTO);
+    	dao.insertMember(memberDTO);
     }
     
  // 아이디 중복 체크
@@ -45,7 +48,8 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
 	public MemberDTO findByMemberID(String memberID) {
-		return sqlSession.selectOne("com.team5.campscore.dao.MemberDAO.findByMemberID", memberID);
+		return dao.findByMemberID(memberID);
 		//조회 실패시 null 
 	}
+	
 }
